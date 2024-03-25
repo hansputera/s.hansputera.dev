@@ -2,11 +2,11 @@ import { ShortPayload } from "@/declarations/shortPayload";
 import { addCodeUrl } from "@/services/addCodeUrl";
 import { checkCodeOrUrl } from "@/services/checkCodeUrl";
 import { safeJsonParse } from "@/utilities/safeJsonParse";
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
-export async function POST(request: NextApiRequest) {
+export async function POST(request: NextRequest) {
     // Checking payload is valid or not
-    const payload = safeJsonParse<ShortPayload>(request.body);
+    const payload = safeJsonParse<ShortPayload>(await request.text());
 
     // If payload is not valid, return 400 status code
     if (!payload) {

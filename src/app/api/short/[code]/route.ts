@@ -1,7 +1,7 @@
 import { getCode } from "@/services/getCode";
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
-export async function GET(_request: NextApiRequest, { params }: { params: { code: string } }) {
+export async function GET(_request: NextRequest, { params }: { params: { code: string } }) {
     // Get the code from the params
     const { code } = params;
 
