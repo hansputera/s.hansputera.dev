@@ -1,8 +1,11 @@
 import { ShortPayload } from "@/declarations/shortPayload";
 import { addCodeUrl } from "@/services/addCodeUrl";
 import { checkCodeOrUrl } from "@/services/checkCodeUrl";
+import { generateShortCode } from "@/utilities/generateShortCode";
+import { normalizeCode } from "@/utilities/normalizeCode";
 import { safeJsonParse } from "@/utilities/safeJsonParse";
 import { NextRequest } from "next/server";
+import normalizeUrl from 'normalize-url';
 
 export async function POST(request: NextRequest) {
     // Checking payload is valid or not
@@ -24,20 +27,22 @@ export async function POST(request: NextRequest) {
         sensitive,
     } = payload;
 
+    const generatedCode = normalizeCode(code ?? generateShortCode(8));
+
     // We should check the code OR url is exists on database
-    const dataExistsBoolean = await checkCodeOrUrl(code, url, sensitive);
+    const dataExistsBoolean = await checkCodeOrUrl(generatedCode, normalizeUrl(url), sensitive);
 
     // If data exists, return 400 status code
     if (dataExistsBoolean) {
         return Response.json({
-            message: 'URL or code already exists',
+            message: 'URL or code already exists or they\'re not allowed to use.',
         }, {
             status: 400,
         });
     }
 
     // Add the code to the database
-    const shortenedData = await addCodeUrl(url, code, sensitive);
+    const shortenedData = await addCodeUrl(normalizeUrl(url), generatedCode, sensitive);
 
     // If we couldn't add the code to the database, return 500 status code
     if (!shortenedData) {

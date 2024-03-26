@@ -29,6 +29,17 @@ export default function Home() {
               <Link className="text-blue-500" href={'/'.concat(shortenedData.shortCode)}>
                 {window.location.origin}/{shortenedData.shortCode}
               </Link>
+
+              <div className="mt-4">
+                <p className="text-sm text-gray-600">
+                  Deletion Key
+                </p>
+                <input
+                  value={shortenedData.deletionKeyHash}
+                  onChange={() => {}}
+                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500 hover:border-blue-500 transition duration-300 ease-in-out"
+                />
+              </div>
             </div>
         )}
 
@@ -65,7 +76,9 @@ export default function Home() {
           )}
 
           <input
-            {...formHook.register('code')}
+            {...formHook.register('code', {
+              required: false,
+            })}
             type="text"
             aria-invalid={formHook.formState.errors.code ? 'true' : 'false'}
             placeholder="Custom code (optional)"
@@ -92,7 +105,7 @@ export default function Home() {
             disabled={formHook.formState.isSubmitting}
             type="submit"
             onClick={() => setShortenedData(undefined)}
-            className="mt-4 bg-blue-500 text-white font-semibold rounded-md px-4 py-2 hover:bg-blue-600 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="mt-4 bg-purple-400 text-white font-semibold px-4 py-2 rounded-md hover:bg-purple-500 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-100"
           >
             Shorten
           </button>
