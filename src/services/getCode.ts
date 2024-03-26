@@ -20,7 +20,7 @@ export const getCode = async <R extends boolean>(code: string, removeKey: R): Pr
     }
 
     // Check if the document is older than 14 days
-    if ((Date.now() - data.createdAt.getMilliseconds()) >= 1209600000) {
+    if ((Date.now() - new Date(data.createdAt).getMilliseconds()) >= 1209600000) {
         // Delete the document
         await deleteUrl(data.deletionKeyHash);
     }
