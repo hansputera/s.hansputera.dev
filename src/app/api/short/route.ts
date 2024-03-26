@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         sensitive,
     } = payload;
 
-    const generatedCode = normalizeCode(code ?? generateShortCode(8));
+    const generatedCode = normalizeCode(code.length ? code : generateShortCode(8));
 
     // We should check the code OR url is exists on database
     const dataExistsBoolean = await checkCodeOrUrl(generatedCode, normalizeUrl(url), sensitive);
