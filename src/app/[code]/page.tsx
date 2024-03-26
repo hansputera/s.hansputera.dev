@@ -1,7 +1,7 @@
 'use server';
 
 import { getCode } from "@/services/getCode";
-import { RedirectType, redirect } from "next/navigation";
+import { RedirectType, permanentRedirect } from "next/navigation";
 
 export default async function CodePage({params}:{params: {code: string}}) {
  
@@ -22,5 +22,5 @@ export default async function CodePage({params}:{params: {code: string}}) {
         )
     }
 
-    return redirect(document.url, RedirectType.replace);
+    return permanentRedirect(document.url, RedirectType.replace);
 }
