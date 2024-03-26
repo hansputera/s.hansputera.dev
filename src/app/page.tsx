@@ -1,5 +1,6 @@
 'use client';
 
+import { DeletionModal } from "@/components/deletionModal";
 import { type ShortFormInputs } from "@/declarations/shortForm";
 import { type DocumentUrl } from "@/declarations/url";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import { Form, useForm } from "react-hook-form";
 
 export default function Home() {
   const formHook = useForm<ShortFormInputs>();
+  const [showDeletionModal, setShowDeletionModal] = useState(false);
   const [shortenedData, setShortenedData] = useState<DocumentUrl>();
 
   return (
@@ -110,7 +112,17 @@ export default function Home() {
             Shorten
           </button>
         </Form>
+        <p className="text-sm font-sans mt-2">
+          Do you want delete your URL?{' '}
+          <a
+            onClick={() => setShowDeletionModal(true)}
+            className="text-blue-500 hover:cursor-pointer hover:underline"
+          >
+            Click here
+          </a>
+        </p>
       </div>
+      {showDeletionModal && <DeletionModal dispatch={setShowDeletionModal} />}
       <span className="font-medium">
         <Link href={'https://s.hansputera.dev'}>
           s.hansputera.dev - Open Source
