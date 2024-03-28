@@ -1,6 +1,7 @@
 import { ShortPayload } from "@/declarations/shortPayload";
 import { addCodeUrl } from "@/services/addCodeUrl";
 import { checkCodeOrUrl } from "@/services/checkCodeUrl";
+import { checkUrlService } from "@/services/checkUrl";
 import { generateShortCode } from "@/utilities/generateShortCode";
 import { normalizeCode } from "@/utilities/normalizeCode";
 import { safeJsonParse } from "@/utilities/safeJsonParse";
@@ -36,6 +37,15 @@ export async function POST(request: NextRequest) {
     if (dataExistsBoolean) {
         return Response.json({
             message: 'URL or code already exists or they\'re not allowed to use.',
+        }, {
+            status: 400,
+        });
+    }
+
+    const urlExists = await checkUrlService(normalizeUrl(url));
+    if (!urlExists) {
+        return Response.json({
+            message: 'URL is not reachable',
         }, {
             status: 400,
         });
